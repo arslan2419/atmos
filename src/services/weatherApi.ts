@@ -17,6 +17,25 @@ import { getCachedData, setCachedData, getWeatherCacheKey, getHistoricalCacheKey
 const WEATHER_API_BASE = 'https://api.open-meteo.com/v1';
 const HISTORICAL_API_BASE = 'https://archive-api.open-meteo.com/v1';
 const GEOCODING_API_BASE = 'https://geocoding-api.open-meteo.com/v1';
+const NOMINATIM_API_BASE = 'https://nominatim.openstreetmap.org';
+
+// Nominatim reverse geocoding response type
+interface NominatimReverseResponse {
+  place_id: number;
+  lat: string;
+  lon: string;
+  display_name: string;
+  address: {
+    city?: string;
+    town?: string;
+    village?: string;
+    municipality?: string;
+    county?: string;
+    state?: string;
+    country?: string;
+    country_code?: string;
+  };
+}
 
 // API error handler
 function handleApiError(error: unknown): WeatherError {
@@ -81,43 +100,44 @@ export async function searchLocations(query: string): Promise<Location[]> {
   }
 }
 
-// Reverse geocoding - get location from coordinates
+// Reverse geocoding - get location from coordinates using Nominatim API
 export async function reverseGeocode(latitude: number, longitude: number): Promise<Location | null> {
   try {
-    // Open-Meteo doesn't have reverse geocoding, so we'll create a location object
-    // and use a separate service or just use coordinates
-    const response = await axios.get(`${GEOCODING_API_BASE}/search`, {
+    // Use Nominatim API for reverse geocoding (OpenStreetMap)
+    const response = await axios.get<NominatimReverseResponse>(`${NOMINATIM_API_BASE}/reverse`, {
       params: {
-        name: `${latitude.toFixed(2)},${longitude.toFixed(2)}`,
-        count: 1,
-        language: 'en',
+        lat: latitude,
+        lon: longitude,
         format: 'json',
+        addressdetails: 1,
+      },
+      headers: {
+        // Nominatim requires a User-Agent header
+        'User-Agent': 'AtmosWeatherApp/1.0',
       },
     });
 
-    // If we can't find the location, create a generic one
-    if (!response.data.results || response.data.results.length === 0) {
-      return {
-        id: `${latitude}_${longitude}`,
-        name: 'Current Location',
-        country: 'Unknown',
-        countryCode: 'XX',
-        latitude,
-        longitude,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      };
-    }
+    const data = response.data;
+    const address = data.address;
 
-    const result = response.data.results[0];
+    // Get the most specific place name available
+    const cityName = address.city || address.town || address.village || address.municipality || address.county;
+    const stateName = address.state;
+    const countryName = address.country || 'Unknown';
+    const countryCode = address.country_code?.toUpperCase() || 'XX';
+
+    // Build a meaningful location name
+    const locationName = cityName || stateName || countryName;
+
     return {
-      id: `${result.latitude}_${result.longitude}`,
-      name: result.name,
-      country: result.country,
-      countryCode: result.country_code,
-      latitude: result.latitude,
-      longitude: result.longitude,
-      timezone: result.timezone,
-      admin1: result.admin1,
+      id: `${latitude}_${longitude}`,
+      name: locationName,
+      country: countryName,
+      countryCode: countryCode,
+      latitude,
+      longitude,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      admin1: stateName,
     };
   } catch {
     // Return a basic location if reverse geocoding fails

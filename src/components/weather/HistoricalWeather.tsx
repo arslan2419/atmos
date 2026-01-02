@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, ChevronLeft, ChevronRight, Download, Loader2 } from 'lucide-react';
+import { Calendar, Loader2 } from 'lucide-react';
 import {
   AreaChart,
   Area,
@@ -8,18 +8,16 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  TooltipProps,
   BarChart,
   Bar,
 } from 'recharts';
 import { format, subDays, parseISO, isAfter } from 'date-fns';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Button, IconButton } from '@/components/ui/Button';
+import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { ToggleGroup } from '@/components/ui/Toggle';
 import { WeatherIcon } from '@/components/ui/WeatherIcon';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { formatTemperature, convertTemperature, formatPrecipitation } from '@/utils/temperature';
 import { formatDate, getDateRangeForPastWeek, getDateRangeForPastMonth, formatDateRange } from '@/utils/dateTime';
 import { HistoricalWeather as HistoricalWeatherType } from '@/types/weather';
@@ -287,7 +285,7 @@ function HistoricalTemperatureChart({ data, temperatureUnit }: ChartProps) {
   );
 }
 
-function HistoricalPrecipitationChart({ data, temperatureUnit }: ChartProps) {
+function HistoricalPrecipitationChart({ data }: ChartProps) {
   const chartData = data.map((d) => ({
     date: formatDate(d.date),
     precipitation: d.precipitation,

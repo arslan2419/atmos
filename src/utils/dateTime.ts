@@ -1,6 +1,6 @@
-import { format, parseISO, isToday, isTomorrow, addDays, subDays, startOfDay, endOfDay } from 'date-fns';
+import { format, parseISO, isToday, isTomorrow, subDays } from 'date-fns';
 
-export function formatTime(isoString: string, timezone?: string): string {
+export function formatTime(isoString: string): string {
   const date = parseISO(isoString);
   return format(date, 'HH:mm');
 }

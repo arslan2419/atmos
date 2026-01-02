@@ -29,6 +29,7 @@ export function HomePage() {
     if (!currentLocation && !isLoading && !error) {
       detectUserLocation();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Welcome screen when no location is selected

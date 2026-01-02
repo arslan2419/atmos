@@ -15,7 +15,6 @@ interface HourlyForecastProps {
 }
 
 export function HourlyForecast({ hours = 24 }: HourlyForecastProps) {
-  const { theme } = useTheme();
   const { weatherData, temperatureUnit, isLoading } = useWeather();
   const scrollRef = useRef<HTMLDivElement>(null);
 

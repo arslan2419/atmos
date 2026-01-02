@@ -1,8 +1,8 @@
 import React from 'react';
-import { X, Sun, Moon, Monitor, Thermometer, Palette, Trash2 } from 'lucide-react';
+import { X, Sun, Moon, Thermometer, Palette, Trash2 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
-import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card } from '@/components/ui/Card';
 import { Button, IconButton } from '@/components/ui/Button';
 import { ToggleGroup } from '@/components/ui/Toggle';
 import { clearCache, clearRecentLocations } from '@/utils/storage';

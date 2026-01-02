@@ -206,7 +206,7 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
       if (location) {
         await fetchWeatherForLocation(location);
       }
-    } catch (error) {
+    } catch {
       dispatch({
         type: 'SET_ERROR',
         payload: {
@@ -280,6 +280,7 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
 }
 
 // Custom hook to use weather context
+// eslint-disable-next-line react-refresh/only-export-components
 export function useWeather() {
   const context = useContext(WeatherContext);
   if (context === undefined) {

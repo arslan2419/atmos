@@ -9,12 +9,10 @@ import {
   ResponsiveContainer,
   TooltipProps,
 } from 'recharts';
-import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
-import { formatTemperature, convertTemperature } from '@/utils/temperature';
+import { convertTemperature } from '@/utils/temperature';
 import { formatHour12h, formatShortDayName } from '@/utils/dateTime';
-import { HourlyForecast, DailyForecast } from '@/types/weather';
 
 interface TemperatureChartProps {
   type?: 'hourly' | 'daily';
@@ -23,7 +21,6 @@ interface TemperatureChartProps {
 }
 
 export function TemperatureChart({ type = 'hourly', hours = 24, days = 7 }: TemperatureChartProps) {
-  const { theme } = useTheme();
   const { weatherData, temperatureUnit } = useWeather();
 
   if (!weatherData) return null;
@@ -117,7 +114,7 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
   type: 'hourly' | 'daily';
 }
 
-function CustomTooltip({ active, payload, label, unit, type }: CustomTooltipProps) {
+function CustomTooltip({ active, payload, label, unit }: CustomTooltipProps) {
   if (!active || !payload || !payload.length) return null;
 
   return (

@@ -9,10 +9,8 @@ import {
   ResponsiveContainer,
   TooltipProps,
 } from 'recharts';
-import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
-import { formatSpeed } from '@/utils/temperature';
 import { formatShortDayName, formatHour12h } from '@/utils/dateTime';
 import { getWindDirection } from '@/utils/weatherCodes';
 
@@ -23,7 +21,6 @@ interface WindChartProps {
 }
 
 export function WindChart({ type = 'hourly', hours = 24, days = 7 }: WindChartProps) {
-  const { theme } = useTheme();
   const { weatherData, temperatureUnit } = useWeather();
 
   if (!weatherData) return null;

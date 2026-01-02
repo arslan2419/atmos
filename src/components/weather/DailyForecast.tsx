@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Droplets, Wind } from 'lucide-react';
+import { ChevronDown, ChevronUp, Droplets } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -7,13 +7,12 @@ import { WeatherIcon } from '@/components/ui/WeatherIcon';
 import { DailyForecastSkeleton } from '@/components/ui/Skeleton';
 import { ToggleGroup } from '@/components/ui/Toggle';
 import { formatTemperature, formatSpeed, formatPrecipitation } from '@/utils/temperature';
-import { formatShortDayName, formatDate, formatTime12h } from '@/utils/dateTime';
+import { formatShortDayName, formatTime12h } from '@/utils/dateTime';
 import { DailyForecast as DailyForecastType } from '@/types/weather';
 
 type ViewMode = '7days' | '14days';
 
 export function DailyForecast() {
-  const { theme } = useTheme();
   const { weatherData, temperatureUnit, isLoading } = useWeather();
   const [viewMode, setViewMode] = useState<ViewMode>('7days');
   const [expandedDay, setExpandedDay] = useState<string | null>(null);

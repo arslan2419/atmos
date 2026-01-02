@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useMemo, ReactNode } from 'react';
 import { WeatherCondition } from '@/types/weather';
 
 // Theme configuration for different weather conditions
@@ -266,9 +266,7 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children, weatherCondition, isDay, themeMode }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<WeatherTheme>(weatherThemes.clear);
-
-  useEffect(() => {
+  const theme = useMemo(() => {
     let newTheme: WeatherTheme;
 
     if (themeMode === 'light') {
@@ -280,10 +278,10 @@ export function ThemeProvider({ children, weatherCondition, isDay, themeMode }: 
       newTheme = isDay ? weatherThemes[weatherCondition] : nightThemes[weatherCondition];
     }
 
-    setTheme(newTheme);
-
     // Update document class for global styles
     document.documentElement.classList.toggle('dark', newTheme.isDark);
+
+    return newTheme;
   }, [weatherCondition, isDay, themeMode]);
 
   return (
@@ -293,6 +291,7 @@ export function ThemeProvider({ children, weatherCondition, isDay, themeMode }: 
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
@@ -301,5 +300,6 @@ export function useTheme() {
   return context;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { weatherThemes, nightThemes };
 

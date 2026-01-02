@@ -10,7 +10,6 @@ import {
   TooltipProps,
   Cell,
 } from 'recharts';
-import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { formatShortDayName, formatHour12h } from '@/utils/dateTime';
@@ -22,7 +21,6 @@ interface PrecipitationChartProps {
 }
 
 export function PrecipitationChart({ type = 'daily', hours = 24, days = 7 }: PrecipitationChartProps) {
-  const { theme } = useTheme();
   const { weatherData } = useWeather();
 
   if (!weatherData) return null;
@@ -98,7 +96,7 @@ function getProbabilityColor(probability: number): string {
   return '#93c5fd'; // Very light blue
 }
 
-interface CustomTooltipProps extends TooltipProps<number, string> {}
+type CustomTooltipProps = TooltipProps<number, string>;
 
 function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload || !payload.length) return null;

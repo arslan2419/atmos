@@ -1,0 +1,19 @@
+{
+  "name": "Atmos Weather",
+  "short_name": "Atmos",
+  "description": "A modern weather application with real-time forecasts and beautiful dynamic themes",
+  "theme_color": "#1e293b",
+  "background_color": "#0f172a",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

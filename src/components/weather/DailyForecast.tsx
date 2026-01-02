@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown, ChevronUp, Droplets } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';

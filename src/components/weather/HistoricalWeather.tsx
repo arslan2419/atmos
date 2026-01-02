@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Loader2 } from 'lucide-react';
 import {
   AreaChart,
@@ -49,15 +49,16 @@ export function HistoricalWeather() {
       ({ start, end } = getDateRangeForPastWeek());
     } else if (dateRange === 'month') {
       ({ start, end } = getDateRangeForPastMonth());
-    } else if (customStartDate && customEndDate) {
+    } else if (dateRange === 'custom' && customStartDate && customEndDate) {
       start = customStartDate;
       end = customEndDate;
     } else {
       return;
     }
 
-    fetchHistoricalData(start, end);
-  }, [currentLocation, dateRange, customStartDate, customEndDate, fetchHistoricalData]);
+    // Always force refresh when fetching to ensure fresh data for different date ranges
+    fetchHistoricalData(start, end, true);
+  }, [currentLocation?.id, dateRange, customStartDate, customEndDate, fetchHistoricalData]);
 
   const handleDateRangeChange = (value: DateRange) => {
     setDateRange(value);
@@ -190,7 +191,7 @@ export function HistoricalWeather() {
           <HistoricalTemperatureChart data={historicalData} temperatureUnit={temperatureUnit} />
 
           {/* Precipitation Chart */}
-          <HistoricalPrecipitationChart data={historicalData} temperatureUnit={temperatureUnit} />
+          <HistoricalPrecipitationChart data={historicalData} />
 
           {/* Data Table */}
           <HistoricalDataTable data={historicalData} temperatureUnit={temperatureUnit} />
@@ -262,7 +263,7 @@ function HistoricalTemperatureChart({ data, temperatureUnit }: ChartProps) {
                 borderRadius: '8px',
               }}
               labelStyle={{ color: 'rgba(255,255,255,0.7)' }}
-              formatter={(value: number) => [`${value}${unit}`, '']}
+              formatter={(value) => [`${value}${unit}`, '']}
             />
             <Area
               type="monotone"
@@ -285,7 +286,7 @@ function HistoricalTemperatureChart({ data, temperatureUnit }: ChartProps) {
   );
 }
 
-function HistoricalPrecipitationChart({ data }: ChartProps) {
+function HistoricalPrecipitationChart({ data }: { data: HistoricalWeatherType[] }) {
   const chartData = data.map((d) => ({
     date: formatDate(d.date),
     precipitation: d.precipitation,
@@ -320,7 +321,7 @@ function HistoricalPrecipitationChart({ data }: ChartProps) {
                 borderRadius: '8px',
               }}
               labelStyle={{ color: 'rgba(255,255,255,0.7)' }}
-              formatter={(value: number) => [`${value.toFixed(1)} mm`, 'Precipitation']}
+              formatter={(value) => [`${Number(value).toFixed(1)} mm`, 'Precipitation']}
             />
             <Bar
               dataKey="precipitation"

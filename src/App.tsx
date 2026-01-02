@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WeatherProvider, useWeather } from '@/context/WeatherContext';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode, forwardRef } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
 interface CardProps {
@@ -18,7 +18,7 @@ const paddingClasses = {
   lg: 'p-6 md:p-8',
 };
 
-export function Card({
+export const Card = forwardRef<HTMLDivElement, CardProps>(function Card({
   children,
   className = '',
   hover = false,
@@ -26,7 +26,7 @@ export function Card({
   onClick,
   role,
   ariaLabel,
-}: CardProps) {
+}, ref) {
   const { theme } = useTheme();
   
   const baseClasses = `
@@ -40,6 +40,7 @@ export function Card({
 
   return (
     <div
+      ref={ref}
       className={`${baseClasses} ${className}`}
       onClick={onClick}
       role={role}
@@ -50,7 +51,7 @@ export function Card({
       {children}
     </div>
   );
-}
+});
 
 interface CardHeaderProps {
   children: ReactNode;

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   AreaChart,
   Area,
@@ -7,7 +6,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  TooltipProps,
 } from 'recharts';
 import { useWeather } from '@/context/WeatherContext';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -81,7 +79,7 @@ export function TemperatureChart({ type = 'hourly', hours = 24, days = 7 }: Temp
               tickFormatter={(value) => `${value}°`}
             />
             <Tooltip
-              content={<CustomTooltip unit={unit} type={type} />}
+              content={<CustomTooltip unit={unit} />}
               cursor={{ stroke: 'rgba(255,255,255,0.2)' }}
             />
             <Area
@@ -109,9 +107,12 @@ export function TemperatureChart({ type = 'hourly', hours = 24, days = 7 }: Temp
   );
 }
 
-interface CustomTooltipProps extends TooltipProps<number, string> {
+interface CustomTooltipProps {
+  active?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any[];
+  label?: string;
   unit: string;
-  type: 'hourly' | 'daily';
 }
 
 function CustomTooltip({ active, payload, label, unit }: CustomTooltipProps) {
@@ -120,7 +121,7 @@ function CustomTooltip({ active, payload, label, unit }: CustomTooltipProps) {
   return (
     <div className="bg-slate-900/90 backdrop-blur-md rounded-lg p-3 border border-white/10 shadow-xl">
       <p className="text-white/70 text-sm mb-2">{label}</p>
-      {payload.map((entry, index) => (
+      {payload.map((entry: { name?: string; value?: number; color?: string }, index: number) => (
         <p key={index} className="text-white font-semibold" style={{ color: entry.color }}>
           {entry.name}: {entry.value}{unit}
         </p>
@@ -128,4 +129,3 @@ function CustomTooltip({ active, payload, label, unit }: CustomTooltipProps) {
     </div>
   );
 }
-

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   LineChart,
   Line,
@@ -7,7 +6,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  TooltipProps,
 } from 'recharts';
 import { useWeather } from '@/context/WeatherContext';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -20,12 +18,20 @@ interface WindChartProps {
   days?: number;
 }
 
+interface WindDataItem {
+  time: string;
+  speed: number;
+  gusts?: number;
+  direction: string;
+  degrees: number;
+}
+
 export function WindChart({ type = 'hourly', hours = 24, days = 7 }: WindChartProps) {
   const { weatherData, temperatureUnit } = useWeather();
 
   if (!weatherData) return null;
 
-  const data = type === 'hourly'
+  const data: WindDataItem[] = type === 'hourly'
     ? weatherData.hourly.slice(0, hours).map((h) => ({
         time: formatHour12h(h.time),
         speed: Math.round(h.windSpeed),
@@ -101,7 +107,11 @@ export function WindChart({ type = 'hourly', hours = 24, days = 7 }: WindChartPr
   );
 }
 
-interface CustomTooltipProps extends TooltipProps<number, string> {
+interface CustomTooltipProps {
+  active?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any[];
+  label?: string;
   unit: string;
   type: 'hourly' | 'daily';
 }
@@ -109,7 +119,7 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
 function CustomTooltip({ active, payload, label, unit, type }: CustomTooltipProps) {
   if (!active || !payload || !payload.length) return null;
 
-  const data = payload[0].payload;
+  const data = payload[0].payload as WindDataItem;
 
   return (
     <div className="bg-slate-900/90 backdrop-blur-md rounded-lg p-3 border border-white/10 shadow-xl">
@@ -128,4 +138,3 @@ function CustomTooltip({ active, payload, label, unit, type }: CustomTooltipProp
     </div>
   );
 }
-

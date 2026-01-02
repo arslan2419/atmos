@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, Sun, Moon, Thermometer, Palette, Trash2 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
 import { HistoricalWeather } from '@/components/weather/HistoricalWeather';

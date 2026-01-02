@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';
 import { CurrentWeather } from '@/components/weather/CurrentWeather';

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useReducer, useEffect, useCallback, ReactNode } from 'react';
 import {
   Location,
   WeatherData,
@@ -183,6 +183,8 @@ export function WeatherProvider({ children }: { children: ReactNode }) {
   const fetchHistoricalData = useCallback(async (startDate: string, endDate: string, forceRefresh = false) => {
     if (!state.currentLocation) return;
 
+    // Clear existing data and show loading state
+    dispatch({ type: 'SET_HISTORICAL_DATA', payload: null });
     dispatch({ type: 'SET_LOADING_HISTORICAL', payload: true });
 
     try {

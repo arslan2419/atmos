@@ -133,7 +133,7 @@ export function SearchBar({ onClose, autoFocus = false }: SearchBarProps) {
         e.preventDefault();
         if (selectedIndex >= 0 && selectedIndex < allItems.length) {
           const item = allItems[selectedIndex];
-          if (item.type === "location") {
+          if (item.type === "location" && item.location) {
             handleSelectLocation(item.location);
           } else if (item.type === "current") {
             handleUseCurrentLocation();

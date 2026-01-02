@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, ReactNode } from 'react';
+import { createContext, useContext, useMemo, ReactNode } from 'react';
 import { WeatherCondition } from '@/types/weather';
 
 // Theme configuration for different weather conditions

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BarChart,
   Bar,
@@ -7,7 +6,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  TooltipProps,
   Cell,
 } from 'recharts';
 import { useWeather } from '@/context/WeatherContext';
@@ -20,12 +18,18 @@ interface PrecipitationChartProps {
   days?: number;
 }
 
+interface ChartDataItem {
+  time: string;
+  probability: number;
+  amount: number;
+}
+
 export function PrecipitationChart({ type = 'daily', hours = 24, days = 7 }: PrecipitationChartProps) {
   const { weatherData } = useWeather();
 
   if (!weatherData) return null;
 
-  const data = type === 'hourly'
+  const data: ChartDataItem[] = type === 'hourly'
     ? weatherData.hourly.slice(0, hours).map((h) => ({
         time: formatHour12h(h.time),
         probability: h.precipitationProbability,
@@ -96,12 +100,17 @@ function getProbabilityColor(probability: number): string {
   return '#93c5fd'; // Very light blue
 }
 
-type CustomTooltipProps = TooltipProps<number, string>;
+interface CustomTooltipProps {
+  active?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  payload?: any[];
+  label?: string;
+}
 
 function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload || !payload.length) return null;
 
-  const data = payload[0].payload;
+  const data = payload[0].payload as ChartDataItem;
 
   return (
     <div className="bg-slate-900/90 backdrop-blur-md rounded-lg p-3 border border-white/10 shadow-xl">
@@ -115,4 +124,3 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
     </div>
   );
 }
-

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Star, MapPin, RefreshCw } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useWeather } from '@/context/WeatherContext';

@@ -15,6 +15,7 @@ import { getWeatherCondition, getWeatherDescription } from '@/utils/weatherCodes
 import { getCachedData, setCachedData, getWeatherCacheKey, getHistoricalCacheKey } from '@/utils/storage';
 
 const WEATHER_API_BASE = 'https://api.open-meteo.com/v1';
+const HISTORICAL_API_BASE = 'https://archive-api.open-meteo.com/v1';
 const GEOCODING_API_BASE = 'https://geocoding-api.open-meteo.com/v1';
 
 // API error handler
@@ -295,7 +296,7 @@ export async function getHistoricalWeather(
   }
 
   try {
-    const response = await axios.get<OpenMeteoHistoricalResponse>(`${WEATHER_API_BASE}/archive`, {
+    const response = await axios.get<OpenMeteoHistoricalResponse>(`${HISTORICAL_API_BASE}/archive`, {
       params: {
         latitude: location.latitude,
         longitude: location.longitude,
